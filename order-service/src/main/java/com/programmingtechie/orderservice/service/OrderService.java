@@ -4,13 +4,19 @@ import com.programmingtechie.orderservice.dto.OrderLineItemsDto;
 import com.programmingtechie.orderservice.dto.OrderRequest;
 import com.programmingtechie.orderservice.model.Order;
 import com.programmingtechie.orderservice.model.OrderLineItems;
+import com.programmingtechie.orderservice.repository.OrderRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class OrderService {
+
+    // constructor injection
+    private final OrderRepository orderRepository ;
 
     public void placeOrder(OrderRequest orderRequest){
 
@@ -24,7 +30,8 @@ public class OrderService {
                 .map(this::mapTOLineItems)
                 .toList();
 
-      order.setOrrderLineItemList(orderLineItems);
+      order.setOrderLineItemList(orderLineItems);
+      orderRepository.save(order);
     }
 
     private OrderLineItems mapTOLineItems(OrderLineItemsDto orderLineItemsDto) {
